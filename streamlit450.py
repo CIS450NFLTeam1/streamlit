@@ -14,7 +14,7 @@ options = st.sidebar.radio('Pages',options = ['Introduction','Data Overview','Ge
 
 
 df = pd.read_csv('streamlit_file.csv')
-df_group = pd.read_csv('group_by.csv')
+df_group = pd.read_csv('group_by2.csv')
 df_analysis = df.copy()
 df_analysis.drop(['game_time_eastern','game_time_local'],inplace = True,axis = 1)
 full_groupby = df.groupby('team').agg('mean')[['points_for', 'points_against',
