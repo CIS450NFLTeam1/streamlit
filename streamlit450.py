@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
+import numpy as np
 st.set_page_config(layout="wide")
 
 
@@ -10,7 +10,7 @@ st.title('CIS 450 NFL Data Exploration')
 st.text('This dataset contains NFL game data from 1965-2019')
 
 st.sidebar.title('Nagivation')
-options = st.sidebar.radio('Pages',options = ['Introduction','Data Overview','General Stats','Win/Loss Stats','Win vs. Loss (Draft)','Offensive/Defensive Leaders','Game Prediction (Draft)'])
+options = st.sidebar.radio('Pages',options = ['Introduction','Data Overview','General Stats','Win/Loss Stats','Win vs. Loss','Offensive/Defensive Leaders','Game Prediction (Draft)'])
 
 
 df = pd.read_csv('streamlit_file.csv')
@@ -24,7 +24,13 @@ full_groupby = df.groupby('team').agg('mean')[['points_for', 'points_against',
        'rush_attempts', 'rush_yards', 'rush_yards_per_attempt', 'rush_td',
        'total_yards', 'o_num_plays', 'o_yards_per_play', 'd_num_plays',
        'd_yards_per_play', 'turnovers_lost']]
-
+win_loss_mean = df.groupby('win_loss_num').agg('mean')[['points_for', 'points_against',
+       'point_diff', 'previous_week_point_diff', 'points_combined',
+       'completions', 'pass_attempts', 'completion_pct', 'passing_yards',
+       'passing_tD', 'Int', 'sacks', 'sack_yards', 'qb_rating',
+       'rush_attempts', 'rush_yards', 'rush_yards_per_attempt', 'rush_td',
+       'total_yards', 'o_num_plays', 'o_yards_per_play', 'd_num_plays',
+       'd_yards_per_play', 'turnovers_lost']]
 
 
 def home():
@@ -153,7 +159,11 @@ def ml():
 
 
 def wvsl():
-    st.header('In Progress')
+    win_v_loss = st.selectbox('Select a Statistical Field',win_loss_mean.columns)
+    col1,col2 = st.columns(2)
+    col1.metric('Loss:',np.round(win_loss_mean.loc[0][win_v_loss],2))
+    col2.metric('Win:',np.round(win_loss_mean.loc[1][win_v_loss],2))
+    
 
 
 if options == 'Introduction':
@@ -168,7 +178,7 @@ elif options == 'General Stats':
     general()
 elif options == 'Game Prediction (Draft)':
     ml()
-elif options == 'Win vs. Loss (Draft)':
+elif options == 'Win vs. Loss':
     wvsl()
 
 
