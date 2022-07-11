@@ -1,7 +1,6 @@
 
 import streamlit as st
 import pandas as pd
-import numpy as np
 import plotly.express as px
 
 st.set_page_config(layout="wide")
@@ -17,7 +16,7 @@ options = st.sidebar.radio('Pages',options = ['Introduction','Data Overview','Ge
 df = pd.read_csv('streamlit_file.csv')
 df_group = pd.read_csv('group_by.csv')
 df_analysis = df.copy()
-df_analysis.drop(['game_time_eastern','game_time_local','time_of_possession'],inplace = True,axis = 1)
+df_analysis.drop(['game_time_eastern','game_time_local'],inplace = True,axis = 1)
 full_groupby = df.groupby('team').agg('mean')[['points_for', 'points_against',
        'point_diff', 'previous_week_point_diff', 'points_combined',
        'completions', 'pass_attempts', 'completion_pct', 'passing_yards',
