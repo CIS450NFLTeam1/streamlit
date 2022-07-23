@@ -80,7 +80,7 @@ def init_plots():
     st.success('Click in bottom right-hand corner of dashboard to view dashboard in full-screen mode')
     st.info("Click X on Navigation pane in order for dashboard to correctly render")
     html_temp = """
-    <div class='tableauPlaceholder' id='viz1658530648281' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;NF&#47;NFLViz_16584358482730&#47;PassingDashboard&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='NFLViz_16584358482730&#47;PassingDashboard' /><param name='tabs' value='yes' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;NF&#47;NFLViz_16584358482730&#47;PassingDashboard&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1658530648281');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1050px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+   <div class='tableauPlaceholder' id='viz1658609226689' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;NF&#47;NFLViz_16584358482730&#47;PassingDashboard&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='NFLViz_16584358482730&#47;PassingDashboard' /><param name='tabs' value='yes' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;NF&#47;NFLViz_16584358482730&#47;PassingDashboard&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1658609226689');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1300px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
     """
     components.html(html_temp, width=1400, height=1100)
     max_width_str = f"max-width: 1650px;"
@@ -119,21 +119,87 @@ def init_plots():
 
 
 def ml():
-    st.header('Logistic Regression/Decision Tree model creation in progress')
-    st.subheader('On this page, we plan to showcase our Machine Learning Model based off of user input. ')
-    st.markdown('* User will be able to select a game to be played')
-    st.markdown('* Based on our model and the user input, the user will see whether a Win or Loss is predicted')
-    st.markdown('* The user should also be able to see our models confidence in prediction')
-    st.subheader('(These values are not based on a model, they are just hardcoded to demonstrate our plan to display our model)')
-    game_played = st.selectbox('Choose a game to be Played:',['ARI @ WAS', 'TAM @ PIT','....'])
-    st.subheader('Here we will showcase the fields that are most valuable in predicting a win. For example:')
-    if game_played == '....':
-        pass
-    else:
-        st.write('The Home Team is',game_played.split('@')[1], 'and the Away team is',game_played.split('@')[0])
-    st.write('The game will be played at 1 P.M. EST')
-    st.write('In their previous games', game_played.split('@')[1],'won and ', game_played.split('@')[0],'lost' )
-    st.write("We predict that", game_played.split('@')[1],"will win with 68.2% confidence")
+    st.header('Logistic Regression Initial Model')
+    # st.subheader('On this page, we plan to showcase our Machine Learning Model based off of user input. ')
+    # st.markdown('* User will be able to select a game to be played')
+    # st.markdown('* Based on our model and the user input, the user will see whether a Win or Loss is predicted')
+    # st.markdown('* The user should also be able to see our models confidence in prediction')
+    # st.subheader('(These values are not based on a model, they are just hardcoded to demonstrate our plan to display our model)')
+    # game_played = st.selectbox('Choose a game to be Played:',['ARI @ WAS', 'TAM @ PIT','....'])
+    # st.subheader('Here we will showcase the fields that are most valuable in predicting a win. For example:')
+    st.subheader('Initial Model Preprocessing')
+    df2 = pd.read_csv('NFLData3 Rolling Averages.csv')
+    st.code("""
+    df2 = pd.read_csv('NFLData3 Rolling Averages.csv')
+
+    # To avoid duplication in games, only used Home Teams
+    # Data has 32 games per week when there are 16, this is because there is a "team" and an "opponent"
+    # By using just the home teams, each distinct matchup is only listed once instead of twice
+    
+    df2 = df2[df2['is_home']==1]
+
+    # Using Fill NA to still be able to account for Week 1 when using rolling averages. Otherwise wouldn't be able to predict Week 1 games 
+    
+    df2.fillna(0,axis = 1,inplace = True)
+    
+    """,'python') 
+    df2 = df2[df2['is_home']==1]
+    df2.fillna(0,axis = 1,inplace = True)
+
+    X =  df2[['rolling_season_point_diff', 'rolling_win_total_per_year','rolling_season_o_num_yards_per_play']]
+    y = df2['win_loss_num']
+    
+    
+    st.code("""
+    After experimenting with different test/train splits and columns to be used in the model, 
+    these were the columns that provided the best results for our X parameter
+    
+    X =  df2[['rolling_season_point_diff', 'rolling_win_total_per_year','rolling_season_o_num_yards_per_play']]
+    
+    y = df2['win_loss_num']""",'python')
+
+    st.subheader('Scaling Data/Train/Test Split')
+    from sklearn.preprocessing import StandardScaler
+    scaler = StandardScaler()
+    X_standardized= scaler.fit_transform(X)
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split(X_standardized, y, test_size = 0.2, random_state= 123)
+
+    st.code("""
+    from sklearn.preprocessing import StandardScaler
+    
+    scaler = StandardScaler()
+    
+    X_standardized= scaler.fit_transform(X)
+    
+    from sklearn.model_selection import train_test_split
+    
+    X_train, X_test, y_train, y_test = train_test_split(X_standardized, y, test_size = 0.2, random_state= 123)""",'python')
+    from sklearn.linear_model import LogisticRegression
+
+    logreg = LogisticRegression(max_iter=400)
+
+    logreg.fit(X_train, y_train)
+
+    st.subheader('Fitting Model and Evaluating Accuracy')
+
+    st.code("""
+    from sklearn.linear_model import LogisticRegression
+
+    logreg = LogisticRegression(max_iter=400)
+
+    logreg.fit(X_train, y_train)
+
+    print('Accuracy Score:', round((logreg.score(X_train, y_train) * 100),2),'%')
+""",'python')
+    st.write('Model Accuracy (Percentage of Times Model Correctly Predicted a Win):', round((logreg.score(X_train, y_train) * 100),2),'%')
+    # if game_played == '....':
+    #     pass
+    # else:
+    #     st.write('The Home Team is',game_played.split('@')[1], 'and the Away team is',game_played.split('@')[0])
+    # st.write('The game will be played at 1 P.M. EST')
+    # st.write('In their previous games', game_played.split('@')[1],'won and ', game_played.split('@')[0],'lost' )
+    # st.write("We predict that", game_played.split('@')[1],"will win with 68.2% confidence")
 
     # team_pick = st.selectbox('Choose a Home Team:',df_group.sort_values('team')['team'].values)
     # opp_pick = st.selectbox('Choose an Away Team:',df_group.sort_values('team', ascending = False)['team'].values)
@@ -154,8 +220,17 @@ def ml():
 
 
 def wvsl():
-   st.title('Win/Loss Dashboard in Progress')
-
+    st.title('Win/Loss Dashboards')
+    st.success('Click in bottom right-hand corner of dashboard to view dashboard in full-screen mode')
+    st.info("Click X on Navigation pane in order for dashboard to correctly render")
+    html_temp = """
+     <div class='tableauPlaceholder' id='viz1658609257394' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;NF&#47;NFLViz_16584358482730&#47;WinsDashboard&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='NFLViz_16584358482730&#47;WinsDashboard' /><param name='tabs' value='yes' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;NF&#47;NFLViz_16584358482730&#47;WinsDashboard&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1658609257394');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1300px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+    """
+    components.html(html_temp, width=1400, height=1100)
+    max_width_str = f"max-width: 1650px;"
+    st.markdown(f"""<style>.reportview-container .main .block-container{{{max_width_str}}}</style>""",unsafe_allow_html=True)
+    
+   
 
 if options == 'Introduction':
     home()
