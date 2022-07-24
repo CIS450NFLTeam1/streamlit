@@ -193,6 +193,10 @@ def ml():
     print('Accuracy Score:', round((logreg.score(X_train, y_train) * 100),2),'%')
 """,'python')
     st.write('Model Accuracy (Percentage of Times Model Correctly Predicted a Win):', round((logreg.score(X_train, y_train) * 100),2),'%')
+    coef = logreg.coef_[0]
+    sorted_coef_df = pd.DataFrame(coef,index = X.columns,columns = ['Coeffecients']).sort_values(by = "Coeffecients",ascending = False)
+    st.subheader('Model Coeffecients Sorted by Significance')
+    st.write(sorted_coef_df)
     # if game_played == '....':
     #     pass
     # else:
